@@ -33,7 +33,7 @@
 
 .game-info button {
   height: 10px;
-  width: 60px;
+  width: 80px;
   font-size: 5px;
   padding: 0;
   margin: 2px;
@@ -43,4 +43,11 @@
 .game-info ol {
   padding: 0;
   margin: auto;
+}
+
+.game-description {
+  font-size: 4px;
+  color: darkgray;
+  margin: 5px;
+  margin-left: 0;
 }

@@ -55,6 +55,7 @@ constructor(props) {
   this.state = {
     history: [{
       squares: Array(9).fill(null),
+      position: '',
     }],
     xIsNext: true,
     stepNumber: 0,
@@ -65,19 +66,51 @@ handleClick(i) {
   const history = this.state.history.slice(0, this.state.stepNumber + 1);
   let current = history[history.length - 1];
   const squares = current.squares.slice();
+  let position = '';
+  const currentElement = this.state.xIsNext ? 'X' : 'O';
+
+  if ( i % 3  === 0 ) {
+    if ( i < 3) {
+      position = '(1,1)';
+    } else if ( i < 6 && i >= 3) {
+      position = '(1,2)';
+    } else {
+      position = '(1,3)';
+    }
+  } else if ( i % 3 === 1 ) {
+    if ( i < 3) {
+      position = '(2,1)';
+    } else if ( i < 6 && i >= 3) {
+      position = '(2,2)';
+    } else {
+      position = '(2,3)';
+    }
+  } else {
+    if ( i < 3) {
+      position = '(3,1)';
+    } else if ( i < 6 && i >= 3) {
+      position = '(3,2)';
+    } else {
+      position = '(3,3)';
+    }
+  };
+
   if (calculateWinner(squares) || squares[i]) {
     return;
   }
   else {
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    squares[i] = currentElement;
+    position = currentElement + ' to ' + position;
     this.setState({
       history: history.concat([{
         squares: squares,
+        position: position,
       }]),
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
     });
   }
+
 }
 
 
@@ -92,7 +125,6 @@ jumpTo(step) {
 
     const history = this.state.history;
     let current = history[this.state.stepNumber];
-
     const winner = calculateWinner(current.squares);
     let status;
     
@@ -105,7 +137,7 @@ jumpTo(step) {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + ': ' + step.position:
         'Go to game start';
       return (
         <li key={move}>
@@ -119,10 +151,11 @@ jumpTo(step) {
         <div className="game-board">
           <Board
             squares={current.squares} 
-            onClick={(i) => this.handleClick(i)}
+            onClick={ (i) => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
+          <div className="game-description">Position of the next move is defined in format (column, row). Countdown goes from 1.</div>
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
