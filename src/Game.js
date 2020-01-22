@@ -52,11 +52,14 @@ class Game extends Component {
 
 constructor(props) {
   super(props);
+  let classes = Array(9).fill(false);
+  classes[0] = true;
   this.state = {
     history: [{
       squares: Array(9).fill(null),
       position: '',
     }],
+    addClass: classes,
     xIsNext: true,
     stepNumber: 0,
   }
@@ -68,6 +71,8 @@ handleClick(i) {
   const squares = current.squares.slice();
   let position = '';
   const currentElement = this.state.xIsNext ? 'X' : 'O';
+  let classes = Array(9).fill(false);
+  classes[history.length] = true;
 
   if ( i % 3  === 0 ) {
     if ( i < 3) {
@@ -106,6 +111,7 @@ handleClick(i) {
         squares: squares,
         position: position,
       }]),
+      addClass: classes,
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
     });
@@ -113,11 +119,13 @@ handleClick(i) {
 
 }
 
-
 jumpTo(step) {
+  let classes = Array(9).fill(false);
+  classes[step] = true;
   this.setState({
     stepNumber: step,
     xIsNext: (step % 2) === 0,
+    addClass: classes,
   });
 }
 
@@ -139,9 +147,19 @@ jumpTo(step) {
       const desc = move ?
         'Go to move #' + move + ': ' + step.position:
         'Go to game start';
+      let classes = "";
+
+      if(this.state.addClass[move]) {
+          classes = ["bold"];
+        }
+
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button
+            onClick={() => this.jumpTo(move)}
+            className={classes[0]}
+            >{desc}
+          </button>
         </li>
       );
     });
@@ -151,7 +169,7 @@ jumpTo(step) {
         <div className="game-board">
           <Board
             squares={current.squares} 
-            onClick={ (i) => this.handleClick(i)}
+            onClick={(i) => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
