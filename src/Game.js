@@ -26,23 +26,25 @@ class Board extends Component {
   }
 
   render() {
+
+    const arr = Array(3).fill(0);
+    let i = 0;
+    const board = arr.map ((value, rowNumber) => {
+      const tempo = [i, i + 1, i + 2];
+      const row = tempo.map ((squareNumber) => {
+      return <div key={squareNumber}>{this.renderSquare(squareNumber)}</div>
+      });
+      i += 3;
+      return (
+        <div key={i} className="display-flex">
+          {row}
+        </div>
+      )
+    })
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {board}
       </div>
     );
 }
