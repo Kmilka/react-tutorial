@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './Game.css';
+import arrow_down from './thin-arrowheads-pointing-down.svg';
+import arrow_up from './chevron-up.svg';
 
 
 function Square(props) {
@@ -64,6 +66,7 @@ constructor(props) {
     addClass: classes,
     xIsNext: true,
     stepNumber: 0,
+    direction: true,
   }
 }
 
@@ -131,6 +134,12 @@ jumpTo(step) {
   });
 }
 
+toggle() {
+  this.setState({
+    direction: !this.state.direction,
+  });
+}
+
   render() {
 
     const history = this.state.history;
@@ -177,7 +186,10 @@ jumpTo(step) {
         <div className="game-info">
           <div className="game-description">Position of the next move is defined in format (column, row). Countdown goes from 1.</div>
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <button className="direction-button" onClick={() => this.toggle()}>
+            <img src={this.state.direction ? arrow_up : arrow_down} alt="arrow"/>
+          </button>
+          <ol>{this.state.direction ? moves : moves.reverse()}</ol>
         </div>
       </div>
     )

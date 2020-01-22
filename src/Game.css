@@ -30,7 +30,7 @@
   flex-direction: column;
 }
 
-.game-info button {
+li > button {
   height: 10px;
   width: 80px;
   font-size: 5px;
@@ -53,4 +53,22 @@
 
 .bold {
   font-weight: bold;
+}
+
+.direction-button {
+  margin: 2px;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  font-size: 4px;
+}
+
+.direction-button:focus {
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
 }
