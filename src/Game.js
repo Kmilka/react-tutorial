@@ -204,12 +204,16 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      let win = {
+      return {
         winner: squares[a],
         winSquares: [a,b,c],
+      };
+    } else if (!squares.includes(null)) {
+      return {
+        winner: "None",
+        winSquares: [],
       }
-      return win;
-    } 
+    }
   }
   return;
 }
