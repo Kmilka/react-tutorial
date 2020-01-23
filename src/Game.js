@@ -6,9 +6,11 @@ import arrow_up from './chevron-up.svg';
 
 function Square(props) {
 
+  let classes = props.isWinner ? ["square", "winner"] : ["square"]; 
+
     return (
       <button 
-        className="square" 
+        className={classes.join(" ")} 
         onClick={props.onClick}
       >
         {props.value}
@@ -19,10 +21,13 @@ function Square(props) {
 class Board extends Component {
 
   renderSquare(i) {
+    let win = calculateWinner(this.props.squares);
+
     return (
       <Square
         value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)} 
+        onClick={() => this.props.onClick(i)}
+        isWinner={win ? win.winSquares.includes(i) : null}
       />
     );
   }
@@ -144,25 +149,14 @@ toggle() {
 
     const history = this.state.history;
     let current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-    let status;
-    
-    if (winner) {
-      status = `Winner: ${winner}`;
-    }
-    else {
-      status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
-    }
-
+    let status = calculateWinner(current.squares) ? 
+    `Winner: ${calculateWinner(current.squares).winner}`:
+    `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move + ': ' + step.position:
         'Go to game start';
-      let classes = "";
-
-      if(this.state.addClass[move]) {
-          classes = ["bold"];
-        }
+      const classes = this.state.addClass[move] ? ["bold"] : "";
 
       return (
         <li key={move}>
@@ -194,9 +188,7 @@ toggle() {
       </div>
     )
   }
-
 }
-
 
 function calculateWinner(squares) {
   const lines = [
@@ -212,10 +204,14 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
+      let win = {
+        winner: squares[a],
+        winSquares: [a,b,c],
+      }
+      return win;
+    } 
   }
-  return null;
+  return;
 }
 
 export default Game;
